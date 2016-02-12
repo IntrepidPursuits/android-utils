@@ -1,6 +1,20 @@
 # Common Utils
 A collection of common utility methods used by Intrepid.
 
+
+Setup
+=======
+Add the following lines to your build.gradle file:
+```
+repositories {
+    maven { url "http://sorcerer.intrepid-dev.com:81/archiva/repository/android/" }
+}
+
+dependencies {
+    compile "io.intrepid.commonutils:commonutils:0.1.0"
+}
+```
+
 License
 =======
 ```

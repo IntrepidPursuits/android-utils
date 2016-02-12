@@ -1,4 +1,15 @@
 apply plugin: 'com.android.library'
+apply plugin: 'maven-publish'
+
+ext.localProperties = new Properties()
+ext.localProperties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+ext.getLocalProperty = { propertyName ->
+    def property = localProperties.getProperty(propertyName)
+    return property == null ? "" : property
+}
+
+ext.artifactPath = "build/outputs/aar/commonutils-release.aar"
 
 android {
     compileSdkVersion 23
@@ -8,7 +19,7 @@ android {
         minSdkVersion 15
         targetSdkVersion 23
         versionCode 1
-        versionName "1.0"
+        versionName "0.1.0"
     }
     buildTypes {
         release {
@@ -18,8 +29,36 @@ android {
     }
 }
 
+publishing {
+    repositories {
+        maven {
+            url "http://sorcerer.intrepid-dev.com:81/archiva/repository/android/"
+            def mavenUser = getLocalProperty("mavenUser")
+            def mavenPassword = getLocalProperty("mavenPassword")
+            if (mavenUser != "") {
+                credentials {
+                    username mavenUser
+                    password mavenPassword
+                }
+            }
+        }
+    }
+
+    publications {
+        mavenJava(MavenPublication) {
+            groupId 'io.intrepid.commonutils'
+            artifactId 'commonutils'
+            version android.defaultConfig.versionName
+
+            artifact artifactPath
+        }
+    }
+}
+
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
+    testCompile 'org.mockito:mockito-all:1.10.19'
     compile 'com.android.support:appcompat-v7:23.1.1'
 }
