@@ -7,17 +7,14 @@ import java.util.Collections;
 import java.util.List;
 
 public class IntrepidJavaUtils {
-    private final static char[] hexArray = "0123456789abcdef".toCharArray();
 
     @NonNull
     public static String bytesToHexString(@NonNull byte[] bytes) {
-        char[] hexChars = new char[bytes.length * 2];
-        for (int j = 0; j < bytes.length; j++) {
-            int v = bytes[j] & 0xFF;
-            hexChars[j * 2] = hexArray[v >>> 4];
-            hexChars[j * 2 + 1] = hexArray[v & 0x0F];
+        StringBuilder builder = new StringBuilder();
+        for (byte b : bytes) {
+            builder.append(String.format("%02x", b));
         }
-        return new String(hexChars);
+        return builder.toString();
     }
 
     public static int byteToUnsignedInt(byte b) {

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
@@ -44,7 +45,7 @@ public class IntrepidAndroidUtils {
     public static float convertDpToPixel(@NonNull Context context, float dp) {
         Resources resources = context.getResources();
         DisplayMetrics metrics = resources.getDisplayMetrics();
-        return dp * (metrics.densityDpi / 160f);
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, metrics);
     }
 
     /**
@@ -57,7 +58,6 @@ public class IntrepidAndroidUtils {
     public static float convertPixelsToDp(@NonNull Context context, float px) {
         Resources resources = context.getResources();
         DisplayMetrics metrics = resources.getDisplayMetrics();
-
-        return px / (metrics.densityDpi / 160f);
+        return px / metrics.density;
     }
 }
