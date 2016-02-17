@@ -1,64 +1,108 @@
 package io.intrepid.commonutils;
 
+import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.RuntimeEnvironment;
+import org.robolectric.annotation.Config;
+
+import io.intrepid.library.BuildConfig;
 
 import static io.intrepid.commonutils.IntrepidViewUtils.getPositionInParent;
 import static io.intrepid.commonutils.IntrepidViewUtils.setPaddingBottom;
+import static io.intrepid.commonutils.IntrepidViewUtils.setPaddingLeft;
 import static io.intrepid.commonutils.IntrepidViewUtils.setPaddingRight;
 import static io.intrepid.commonutils.IntrepidViewUtils.setPaddingTop;
+import static io.intrepid.commonutils.IntrepidViewUtils.toggleVisibility;
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@RunWith(RobolectricGradleTestRunner.class)
+@Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP)
 public class IntrepidViewUtilsTest {
 
-    private int left = 10;
-    private int right = 20;
-    private int top = 30;
-    private int bottom = 40;
+    @Test
+    public void testToggleVisibilityGone() throws Exception {
+        final View view = new View(RuntimeEnvironment.application);
+
+        view.setVisibility(View.GONE);
+        toggleVisibility(view);
+        assertEquals(View.VISIBLE, view.getVisibility());
+    }
+
+    @Test
+    public void testToggleVisibilityVisible() throws Exception {
+        final View view = new View(RuntimeEnvironment.application);
+
+        view.setVisibility(View.VISIBLE);
+        toggleVisibility(view);
+        assertEquals(View.GONE, view.getVisibility());
+    }
+
+    @Test
+    public void testToggleVisibilityInvisible() throws Exception {
+        final View view = new View(RuntimeEnvironment.application);
+
+        view.setVisibility(View.INVISIBLE);
+        toggleVisibility(view);
+        assertEquals(View.VISIBLE, view.getVisibility());
+    }
+
+    @Test
+    public void testSetPaddingLeft() throws Exception {
+        final View view = new View(RuntimeEnvironment.application);
+
+        view.setPadding(10, 10, 10, 10);
+        setPaddingLeft(view, 20);
+
+        assertEquals(20, view.getPaddingLeft());
+        assertEquals(10, view.getPaddingRight());
+        assertEquals(10, view.getPaddingTop());
+        assertEquals(10, view.getPaddingBottom());
+    }
 
     @Test
     public void testSetPaddingRight() throws Exception {
-        final View view = Mockito.mock(View.class);
+        final View view = new View(RuntimeEnvironment.application);
 
-        when(view.getPaddingLeft()).thenReturn(left);
-        when(view.getPaddingTop()).thenReturn(top);
-        when(view.getPaddingBottom()).thenReturn(bottom);
+        view.setPadding(10, 10, 10, 10);
+        setPaddingRight(view, 20);
 
-        setPaddingRight(view, right);
-
-        verify(view).setPadding(eq(left), eq(top), eq(right), eq(bottom));
+        assertEquals(10, view.getPaddingLeft());
+        assertEquals(20, view.getPaddingRight());
+        assertEquals(10, view.getPaddingTop());
+        assertEquals(10, view.getPaddingBottom());
     }
 
     @Test
     public void testSetPaddingTop() throws Exception {
-        final View view = Mockito.mock(View.class);
+        final View view = new View(RuntimeEnvironment.application);
 
-        when(view.getPaddingLeft()).thenReturn(left);
-        when(view.getPaddingRight()).thenReturn(right);
-        when(view.getPaddingBottom()).thenReturn(bottom);
+        view.setPadding(10, 10, 10, 10);
+        setPaddingTop(view, 20);
 
-        setPaddingTop(view, top);
-
-        verify(view).setPadding(eq(left), eq(top), eq(right), eq(bottom));
+        assertEquals(10, view.getPaddingLeft());
+        assertEquals(10, view.getPaddingRight());
+        assertEquals(20, view.getPaddingTop());
+        assertEquals(10, view.getPaddingBottom());
     }
 
     @Test
     public void testSetPaddingBottom() throws Exception {
-        final View view = Mockito.mock(View.class);
+        final View view = new View(RuntimeEnvironment.application);
 
-        when(view.getPaddingLeft()).thenReturn(left);
-        when(view.getPaddingRight()).thenReturn(right);
-        when(view.getPaddingTop()).thenReturn(top);
+        view.setPadding(10, 10, 10, 10);
+        setPaddingBottom(view, 20);
 
-        setPaddingBottom(view, bottom);
-
-        verify(view).setPadding(eq(left), eq(top), eq(right), eq(bottom));
+        assertEquals(10, view.getPaddingLeft());
+        assertEquals(10, view.getPaddingRight());
+        assertEquals(10, view.getPaddingTop());
+        assertEquals(20, view.getPaddingBottom());
     }
 
     @Test
