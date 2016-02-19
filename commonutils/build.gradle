@@ -1,15 +1,4 @@
 apply plugin: 'com.android.library'
-apply plugin: 'maven-publish'
-
-ext.localProperties = new Properties()
-ext.localProperties.load(project.rootProject.file('local.properties').newDataInputStream())
-
-ext.getLocalProperty = { propertyName ->
-    def property = localProperties.getProperty(propertyName)
-    return property == null ? "" : property
-}
-
-ext.artifactPath = "build/outputs/aar/commonutils-release.aar"
 
 android {
     compileSdkVersion 23
@@ -27,33 +16,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-}
 
-publishing {
-    repositories {
-        maven {
-            url "http://sorcerer.intrepid-dev.com:81/archiva/repository/android/"
-            def mavenUser = getLocalProperty("mavenUser")
-            def mavenPassword = getLocalProperty("mavenPassword")
-            if (mavenUser != "") {
-                credentials {
-                    username mavenUser
-                    password mavenPassword
-                }
-            }
-        }
-    }
-
-    publications {
-        mavenJava(MavenPublication) {
-            groupId 'io.intrepid.commonutils'
-            artifactId 'commonutils'
-            version android.defaultConfig.versionName
-
-            artifact artifactPath
-        }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
     }
 }
+
+ext.mavenGroupId = 'io.intrepid.commonutils'
+
+apply from: 'publish.gradle'
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])

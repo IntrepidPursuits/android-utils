@@ -11,8 +11,6 @@ import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
-import io.intrepid.library.BuildConfig;
-
 import static io.intrepid.commonutils.IntrepidViewUtils.getPositionInParent;
 import static io.intrepid.commonutils.IntrepidViewUtils.setPaddingBottom;
 import static io.intrepid.commonutils.IntrepidViewUtils.setPaddingLeft;

@@ -1,0 +1,81 @@
+apply plugin: 'maven-publish'
+
+ext.localProperties = new Properties()
+ext.localProperties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+ext.getLocalProperty = { propertyName ->
+    def property = localProperties.getProperty(propertyName)
+    return property == null ? "" : property
+}
+
+ext.artifactPath = "build/outputs/aar/commonutils-release.aar"
+
+task androidJavadocs(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    failOnError = false
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
+    classifier = 'javadoc'
+    from android.sourceSets.main.java.srcDirs
+}
+
+task androidSourcesJar(type: Jar) {
+    classifier = 'sources'
+    from android.sourceSets.main.java.srcDirs
+}
+
+task androidReleaseJar(type: Jar, dependsOn: assembleRelease) {
+    from android.sourceSets.main.java.srcDirs
+    exclude '**/BuildConfig.class'
+    exclude '**/R.class'
+    exclude '**/R$*.class'
+}
+
+publish.dependsOn assembleRelease
+
+publishing {
+    repositories {
+        maven {
+            url "http://sorcerer.intrepid-dev.com:81/archiva/repository/android/"
+            def mavenUser = getLocalProperty("mavenUser")
+            def mavenPassword = getLocalProperty("mavenPassword")
+            if (mavenUser != "") {
+                credentials {
+                    username mavenUser
+                    password mavenPassword
+                }
+            }
+        }
+    }
+
+    publications {
+        mavenJava(MavenPublication) {
+            groupId mavenGroupId
+            artifactId project.name
+            version android.defaultConfig.versionName
+
+            artifact(androidSourcesJar)
+            //artifact(androidJavadocsJar)
+            //artifact(androidReleaseJar)
+            artifact(artifactPath)
+
+            // The publication doesn't know about our dependencies since we can't use `from component java`,
+            // so we have to manually add them to the pom
+            pom.withXml {
+                def dependenciesNode = asNode().appendNode('dependencies')
+
+                // Iterate over the compile dependencies (we don't want the test ones), adding a <dependency> node for each
+                configurations.compile.allDependencies.each {
+                    if (it.group != null) {
+                        def dependencyNode = dependenciesNode.appendNode('dependency')
+                        dependencyNode.appendNode('groupId', it.group)
+                        dependencyNode.appendNode('artifactId', it.name)
+                        dependencyNode.appendNode('version', it.version)
+                    }
+                }
+            }
+        }
+    }
+}

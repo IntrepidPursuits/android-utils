@@ -11,8 +11,6 @@ import org.mockito.Mockito;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
-import io.intrepid.library.BuildConfig;
-
 import static io.intrepid.commonutils.IntrepidAndroidUtils.convertDpToPixel;
 import static io.intrepid.commonutils.IntrepidAndroidUtils.convertPixelsToDp;
 import static org.junit.Assert.assertEquals;

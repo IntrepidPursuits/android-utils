@@ -99,7 +99,7 @@ public class IntrepidViewUtils {
 
     /**
      * Shows a Toast next to a view/button describing what it does
-     * <p/>
+     *
      * This is basically copied over from ActionMenuItemView.onLongClick()
      *
      * @param anchorView The view where the toast will appear next to
@@ -147,9 +147,9 @@ public class IntrepidViewUtils {
     }
 
     /**
-     * In older version of android (<5.0), setting certain background drawable (mainly layer-lists) will cause view's
+     * In older version of android (&lt; 5.0), setting certain background drawable (mainly layer-lists) will cause view's
      * padding to reset. So we need to explicitly remember and restore those paddings
-     * <p/>
+     *
      * https://code.google.com/p/android/issues/detail?id=27235
      *
      * @param view          The view whose background will be set
