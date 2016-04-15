@@ -8,6 +8,11 @@ import java.util.List;
 
 public class IntrepidJavaUtils {
 
+    /**
+     * Returns the string representation of the input byte array. The resulting string will be
+     * in the same order as the input array. Ex: if the input is [0xab,0x12], the resulting string
+     * will be "ab12"
+     */
     @NonNull
     public static String bytesToHexString(@NonNull byte[] bytes) {
         StringBuilder builder = new StringBuilder();

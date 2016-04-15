@@ -8,7 +8,9 @@ ext.getLocalProperty = { propertyName ->
     return property == null ? "" : property
 }
 
-ext.artifactPath = "build/outputs/aar/commonutils-release.aar"
+def getArtifactPath() {
+    return project.buildDir.absolutePath + "/outputs/aar/" + project.archivesBaseName + "-release.aar"
+}
 
 task androidJavadocs(type: Javadoc) {
     source = android.sourceSets.main.java.srcDirs
@@ -59,7 +61,7 @@ publishing {
             artifact(androidSourcesJar)
             //artifact(androidJavadocsJar)
             //artifact(androidReleaseJar)
-            artifact(artifactPath)
+            artifact(getArtifactPath())
 
             // The publication doesn't know about our dependencies since we can't use `from component java`,
             // so we have to manually add them to the pom
