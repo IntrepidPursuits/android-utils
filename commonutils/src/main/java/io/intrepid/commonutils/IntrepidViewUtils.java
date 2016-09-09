@@ -13,12 +13,13 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 public class IntrepidViewUtils {
 
     /**
-     * The the visibility of multiple views
+     * Sets the visibility of multiple views
      *
      * @param visibility the new visibility
      * @param views      the views whose visibility will be changed
@@ -82,6 +83,24 @@ public class IntrepidViewUtils {
         layoutParams.width = width;
         layoutParams.height = height;
         view.setLayoutParams(layoutParams);
+    }
+
+    /**
+     * Sets the layout weight of a view
+     *
+     * @param view   the input view
+     * @param weight the new weight
+     * @throws IllegalArgumentException If the view's parent container is not a LinearLayout
+     */
+    public static void setLayoutWeight(View view, float weight) throws IllegalArgumentException {
+        ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+        if (layoutParams instanceof LinearLayout.LayoutParams) {
+            LinearLayout.LayoutParams linearLayoutParams = (LinearLayout.LayoutParams) layoutParams;
+            linearLayoutParams.weight = weight;
+            view.setLayoutParams(linearLayoutParams);
+        } else {
+            throw new IllegalArgumentException("The view's parent must be a linear layout");
+        }
     }
 
     /**

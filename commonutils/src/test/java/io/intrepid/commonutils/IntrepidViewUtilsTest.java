@@ -4,6 +4,7 @@ import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,6 +15,7 @@ import org.robolectric.annotation.Config;
 
 import static io.intrepid.commonutils.IntrepidViewUtils.getPositionInParent;
 import static io.intrepid.commonutils.IntrepidViewUtils.setHeight;
+import static io.intrepid.commonutils.IntrepidViewUtils.setLayoutWeight;
 import static io.intrepid.commonutils.IntrepidViewUtils.setMargin;
 import static io.intrepid.commonutils.IntrepidViewUtils.setMarginBottom;
 import static io.intrepid.commonutils.IntrepidViewUtils.setMarginLeft;
@@ -109,6 +111,15 @@ public class IntrepidViewUtilsTest {
         setWidthAndHeight(view, 50, 70);
         assertEquals(50, view.getLayoutParams().width);
         assertEquals(70, view.getLayoutParams().height);
+    }
+
+    @Test
+    public void testSetWeight() throws Exception {
+        final LinearLayout container = new LinearLayout(RuntimeEnvironment.application);
+        final View view = new View(RuntimeEnvironment.application);
+        container.addView(view);
+        setLayoutWeight(view, 5);
+        assertEquals(5, ((LinearLayout.LayoutParams) view.getLayoutParams()).weight, 0.0000001);
     }
 
     @Test
