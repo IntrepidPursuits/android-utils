@@ -134,6 +134,40 @@ public class IntrepidViewUtils {
     }
 
     /**
+     * Sets a view's start margin while retaining the margin from other sides
+     *
+     * @param view      the input view
+     * @param newMargin the new start margin in pixels
+     * @throws IllegalArgumentException If the view's parent container does not support margin params
+     */
+    public static void setMarginStart(@NonNull View view, int newMargin) throws IllegalArgumentException {
+        ViewGroup.MarginLayoutParams params = getMarginLayoutParams(view);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            params.setMarginStart(newMargin);
+        } else {
+            params.leftMargin = newMargin;
+        }
+        view.setLayoutParams(params);
+    }
+
+    /**
+     * Sets a view's start margin while retaining the margin from other sides
+     *
+     * @param view      the input view
+     * @param newMargin the new start margin in pixels
+     * @throws IllegalArgumentException If the view's parent container does not support margin params
+     */
+    public static void setMarginEnd(@NonNull View view, int newMargin) throws IllegalArgumentException {
+        ViewGroup.MarginLayoutParams params = getMarginLayoutParams(view);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            params.setMarginEnd(newMargin);
+        } else {
+            params.rightMargin = newMargin;
+        }
+        view.setLayoutParams(params);
+    }
+
+    /**
      * Sets a view's bottom padding while retaining the padding from other sides
      *
      * @param view       the input view

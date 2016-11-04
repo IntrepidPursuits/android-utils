@@ -1,5 +1,6 @@
 package io.intrepid.commonutils;
 
+import android.annotation.TargetApi;
 import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +19,10 @@ import static io.intrepid.commonutils.IntrepidViewUtils.setHeight;
 import static io.intrepid.commonutils.IntrepidViewUtils.setLayoutWeight;
 import static io.intrepid.commonutils.IntrepidViewUtils.setMargin;
 import static io.intrepid.commonutils.IntrepidViewUtils.setMarginBottom;
+import static io.intrepid.commonutils.IntrepidViewUtils.setMarginEnd;
 import static io.intrepid.commonutils.IntrepidViewUtils.setMarginLeft;
 import static io.intrepid.commonutils.IntrepidViewUtils.setMarginRight;
+import static io.intrepid.commonutils.IntrepidViewUtils.setMarginStart;
 import static io.intrepid.commonutils.IntrepidViewUtils.setMarginTop;
 import static io.intrepid.commonutils.IntrepidViewUtils.setPaddingBottom;
 import static io.intrepid.commonutils.IntrepidViewUtils.setPaddingLeft;
@@ -185,6 +188,28 @@ public class IntrepidViewUtilsTest {
         when(parentView.indexOfChild(childView)).thenReturn(5);
 
         assertEquals(5, getPositionInParent(childView));
+    }
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    @Test
+    public void testSetMarginStart() throws Exception {
+        final ViewGroup container = new FrameLayout(RuntimeEnvironment.application);
+        final View view = new View(RuntimeEnvironment.application);
+        container.addView(view);
+        setMarginStart(view, 50);
+        assertEquals(50, ((ViewGroup.MarginLayoutParams) view.getLayoutParams()).getMarginStart());
+        assertEquals(50, ((ViewGroup.MarginLayoutParams) view.getLayoutParams()).leftMargin);
+    }
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    @Test
+    public void testSetMarginEnd() throws Exception {
+        final ViewGroup container = new FrameLayout(RuntimeEnvironment.application);
+        final View view = new View(RuntimeEnvironment.application);
+        container.addView(view);
+        setMarginEnd(view, 50);
+        assertEquals(50, ((ViewGroup.MarginLayoutParams) view.getLayoutParams()).getMarginEnd());
+        assertEquals(50, ((ViewGroup.MarginLayoutParams) view.getLayoutParams()).rightMargin);
     }
 
     @Test
