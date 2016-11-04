@@ -8,7 +8,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
-public class IntrepidAndroidUtils {
+public class AndroidUtils {
     /**
      * Hide the soft keyboard
      *
