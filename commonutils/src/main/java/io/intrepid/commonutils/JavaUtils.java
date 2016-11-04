@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
 
-public class IntrepidJavaUtils {
+public class JavaUtils {
 
     /**
      * Returns the string representation of the input byte array. The resulting string will be

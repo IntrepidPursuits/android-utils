@@ -11,14 +11,14 @@ import org.mockito.Mockito;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
-import static io.intrepid.commonutils.IntrepidAndroidUtils.convertDpToPixel;
-import static io.intrepid.commonutils.IntrepidAndroidUtils.convertPixelsToDp;
+import static io.intrepid.commonutils.AndroidUtils.convertDpToPixel;
+import static io.intrepid.commonutils.AndroidUtils.convertPixelsToDp;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP)
-public class IntrepidAndroidUtilsTest {
+public class AndroidUtilsTest {
 
     @Test
     public void testConvertDpToPixel() throws Exception {

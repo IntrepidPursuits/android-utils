@@ -6,13 +6,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static io.intrepid.commonutils.IntrepidJavaUtils.byteToUnsignedInt;
-import static io.intrepid.commonutils.IntrepidJavaUtils.bytesToHexString;
-import static io.intrepid.commonutils.IntrepidJavaUtils.moveElementInList;
-import static io.intrepid.commonutils.IntrepidJavaUtils.nonNullString;
+import static io.intrepid.commonutils.JavaUtils.byteToUnsignedInt;
+import static io.intrepid.commonutils.JavaUtils.bytesToHexString;
+import static io.intrepid.commonutils.JavaUtils.moveElementInList;
+import static io.intrepid.commonutils.JavaUtils.nonNullString;
 import static org.junit.Assert.assertEquals;
 
-public class IntrepidJavaUtilsTest {
+public class JavaUtilsTest {
 
     @Test
     public void testBytesToHexString() throws Exception {

@@ -14,30 +14,30 @@ import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
-import static io.intrepid.commonutils.IntrepidViewUtils.getPositionInParent;
-import static io.intrepid.commonutils.IntrepidViewUtils.setHeight;
-import static io.intrepid.commonutils.IntrepidViewUtils.setLayoutWeight;
-import static io.intrepid.commonutils.IntrepidViewUtils.setMarginBottom;
-import static io.intrepid.commonutils.IntrepidViewUtils.setMarginEnd;
-import static io.intrepid.commonutils.IntrepidViewUtils.setMarginLeft;
-import static io.intrepid.commonutils.IntrepidViewUtils.setMarginRight;
-import static io.intrepid.commonutils.IntrepidViewUtils.setMarginStart;
-import static io.intrepid.commonutils.IntrepidViewUtils.setMarginTop;
-import static io.intrepid.commonutils.IntrepidViewUtils.setMargins;
-import static io.intrepid.commonutils.IntrepidViewUtils.setPaddingBottom;
-import static io.intrepid.commonutils.IntrepidViewUtils.setPaddingLeft;
-import static io.intrepid.commonutils.IntrepidViewUtils.setPaddingRight;
-import static io.intrepid.commonutils.IntrepidViewUtils.setPaddingTop;
-import static io.intrepid.commonutils.IntrepidViewUtils.setVisibilities;
-import static io.intrepid.commonutils.IntrepidViewUtils.setWidth;
-import static io.intrepid.commonutils.IntrepidViewUtils.setWidthAndHeight;
-import static io.intrepid.commonutils.IntrepidViewUtils.toggleVisibility;
+import static io.intrepid.commonutils.ViewUtils.getPositionInParent;
+import static io.intrepid.commonutils.ViewUtils.setHeight;
+import static io.intrepid.commonutils.ViewUtils.setLayoutWeight;
+import static io.intrepid.commonutils.ViewUtils.setMarginBottom;
+import static io.intrepid.commonutils.ViewUtils.setMarginEnd;
+import static io.intrepid.commonutils.ViewUtils.setMarginLeft;
+import static io.intrepid.commonutils.ViewUtils.setMarginRight;
+import static io.intrepid.commonutils.ViewUtils.setMarginStart;
+import static io.intrepid.commonutils.ViewUtils.setMarginTop;
+import static io.intrepid.commonutils.ViewUtils.setMargins;
+import static io.intrepid.commonutils.ViewUtils.setPaddingBottom;
+import static io.intrepid.commonutils.ViewUtils.setPaddingLeft;
+import static io.intrepid.commonutils.ViewUtils.setPaddingRight;
+import static io.intrepid.commonutils.ViewUtils.setPaddingTop;
+import static io.intrepid.commonutils.ViewUtils.setVisibilities;
+import static io.intrepid.commonutils.ViewUtils.setWidth;
+import static io.intrepid.commonutils.ViewUtils.setWidthAndHeight;
+import static io.intrepid.commonutils.ViewUtils.toggleVisibility;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP)
-public class IntrepidViewUtilsTest {
+public class ViewUtilsTest {
 
     @Test
     public void testSetVisibilities() throws Exception {

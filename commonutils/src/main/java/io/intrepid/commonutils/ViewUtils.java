@@ -16,7 +16,7 @@ import android.view.ViewParent;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-public class IntrepidViewUtils {
+public class ViewUtils {
 
     /**
      * Sets the visibility of multiple views
