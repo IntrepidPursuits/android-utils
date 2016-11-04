@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply from: 'coverage.gradle'
 
 android {
     compileSdkVersion 24
@@ -45,6 +46,6 @@ dependencies {
     testCompile "org.powermock:powermock-classloading-xstream:$powerMockVersion"
 
     // Robolectric
-    def robolectricVersion = '3.0'
+    def robolectricVersion = '3.1.4'
     testCompile "org.robolectric:robolectric:$robolectricVersion"
 }
