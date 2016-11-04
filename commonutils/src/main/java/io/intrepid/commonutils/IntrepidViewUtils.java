@@ -13,9 +13,29 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 public class IntrepidViewUtils {
+
+    /**
+     * Sets the visibility of multiple views
+     *
+     * @param visibility the new visibility
+     * @param views      the views whose visibility will be changed
+     */
+    public static void setVisibilities(int visibility, View... views) {
+        if (views == null) {
+            return;
+        }
+        for (View view : views) {
+            if (view == null) {
+                continue;
+            }
+            view.setVisibility(visibility);
+        }
+    }
+
     /**
      * Toggle a view's visibility between VISIBLE and GONE. If input view's visibility is INVISIBLE,
      * the method will toggle it to VISIBLE
@@ -25,6 +45,62 @@ public class IntrepidViewUtils {
     public static void toggleVisibility(@NonNull View view) {
         final int currentVisibility = view.getVisibility();
         view.setVisibility(currentVisibility == View.VISIBLE ? View.GONE : View.VISIBLE);
+    }
+
+    /**
+     * Sets the width of a view
+     *
+     * @param view  the input view
+     * @param width the new width
+     */
+    public static void setWidth(@NonNull View view, int width) {
+        ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+        layoutParams.width = width;
+        view.setLayoutParams(layoutParams);
+    }
+
+    /**
+     * Sets the height of a view
+     *
+     * @param view   the input view
+     * @param height the new height in pixels
+     */
+    public static void setHeight(@NonNull View view, int height) {
+        ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+        layoutParams.height = height;
+        view.setLayoutParams(layoutParams);
+    }
+
+    /**
+     * Sets the width and height of a view
+     *
+     * @param view   the input view
+     * @param width  the new width in pixels
+     * @param height the new height in pixels
+     */
+    public static void setWidthAndHeight(@NonNull View view, int width, int height) {
+        ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+        layoutParams.width = width;
+        layoutParams.height = height;
+        view.setLayoutParams(layoutParams);
+    }
+
+    /**
+     * Sets the layout weight of a view
+     *
+     * @param view   the input view
+     * @param weight the new weight
+     * @throws IllegalArgumentException If the view's parent container is not a LinearLayout
+     */
+    public static void setLayoutWeight(View view, float weight) throws IllegalArgumentException {
+        ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+        if (layoutParams instanceof LinearLayout.LayoutParams) {
+            LinearLayout.LayoutParams linearLayoutParams = (LinearLayout.LayoutParams) layoutParams;
+            linearLayoutParams.weight = weight;
+            view.setLayoutParams(linearLayoutParams);
+        } else {
+            throw new IllegalArgumentException("The view's parent must be a linear layout");
+        }
     }
 
     /**
@@ -58,6 +134,40 @@ public class IntrepidViewUtils {
     }
 
     /**
+     * Sets a view's start margin while retaining the margin from other sides
+     *
+     * @param view      the input view
+     * @param newMargin the new start margin in pixels
+     * @throws IllegalArgumentException If the view's parent container does not support margin params
+     */
+    public static void setMarginStart(@NonNull View view, int newMargin) throws IllegalArgumentException {
+        ViewGroup.MarginLayoutParams params = getMarginLayoutParams(view);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            params.setMarginStart(newMargin);
+        } else {
+            params.leftMargin = newMargin;
+        }
+        view.setLayoutParams(params);
+    }
+
+    /**
+     * Sets a view's start margin while retaining the margin from other sides
+     *
+     * @param view      the input view
+     * @param newMargin the new start margin in pixels
+     * @throws IllegalArgumentException If the view's parent container does not support margin params
+     */
+    public static void setMarginEnd(@NonNull View view, int newMargin) throws IllegalArgumentException {
+        ViewGroup.MarginLayoutParams params = getMarginLayoutParams(view);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            params.setMarginEnd(newMargin);
+        } else {
+            params.rightMargin = newMargin;
+        }
+        view.setLayoutParams(params);
+    }
+
+    /**
      * Sets a view's bottom padding while retaining the padding from other sides
      *
      * @param view       the input view
@@ -65,6 +175,106 @@ public class IntrepidViewUtils {
      */
     public static void setPaddingBottom(@NonNull View view, int newPadding) {
         view.setPadding(view.getPaddingLeft(), view.getPaddingTop(), view.getPaddingRight(), newPadding);
+    }
+
+    /**
+     * Sets a view's left margin while retaining the margin from other sides
+     *
+     * @param view      the input view
+     * @param newMargin the new left margin in pixels
+     * @throws IllegalArgumentException If the view's parent container does not support margin params
+     */
+    public static void setMarginLeft(@NonNull View view, int newMargin) throws IllegalArgumentException {
+        ViewGroup.MarginLayoutParams params = getMarginLayoutParams(view);
+        params.leftMargin = newMargin;
+        view.setLayoutParams(params);
+    }
+
+    /**
+     * Sets a view's right margin while retaining the margin from other sides
+     *
+     * @param view      the input view
+     * @param newMargin the new right margin in pixels
+     * @throws IllegalArgumentException If the view's parent container does not support margin params
+     */
+    public static void setMarginRight(@NonNull View view, int newMargin) throws IllegalArgumentException {
+        ViewGroup.MarginLayoutParams params = getMarginLayoutParams(view);
+        params.rightMargin = newMargin;
+        view.setLayoutParams(params);
+    }
+
+    /**
+     * Sets a view's top margin while retaining the margin from other sides
+     *
+     * @param view      the input view
+     * @param newMargin the new top margin in pixels
+     * @throws IllegalArgumentException If the view's parent container does not support margin params
+     */
+    public static void setMarginTop(@NonNull View view, int newMargin) throws IllegalArgumentException {
+        ViewGroup.MarginLayoutParams params = getMarginLayoutParams(view);
+        params.topMargin = newMargin;
+        view.setLayoutParams(params);
+    }
+
+    /**
+     * Sets a view's bottom margin while retaining the margin from other sides
+     *
+     * @param view      the input view
+     * @param newMargin the new bottom margin in pixels
+     * @throws IllegalArgumentException If the view's parent container does not support margin params
+     */
+    public static void setMarginBottom(@NonNull View view, int newMargin) throws IllegalArgumentException {
+        ViewGroup.MarginLayoutParams params = getMarginLayoutParams(view);
+        params.bottomMargin = newMargin;
+        view.setLayoutParams(params);
+    }
+
+    /**
+     * Sets all four sides of a view's margin
+     *
+     * @param view      the input view
+     * @param newMargin the margin in pixel that will be applied to all sides
+     * @throws IllegalArgumentException If the view's parent container does not support margin params
+     */
+    public static void setMargins(@NonNull View view, int newMargin) throws IllegalArgumentException {
+        ViewGroup.MarginLayoutParams params = getMarginLayoutParams(view);
+        params.leftMargin = newMargin;
+        params.topMargin = newMargin;
+        params.rightMargin = newMargin;
+        params.bottomMargin = newMargin;
+        view.setLayoutParams(params);
+    }
+
+    /**
+     * Sets all four sides of a view's margin
+     *
+     * @param view         the input view
+     * @param leftMargin   the new left margin in pixels
+     * @param topMargin    the new top margin in pixels
+     * @param rightMargin  the new right margin in pixels
+     * @param bottomMargin the new bottom margin in pixels
+     * @throws IllegalArgumentException If the view's parent container does not support margin params
+     */
+    public static void setMargins(@NonNull View view,
+                                  int leftMargin,
+                                  int topMargin,
+                                  int rightMargin,
+                                  int bottomMargin) throws IllegalArgumentException {
+        ViewGroup.MarginLayoutParams params = getMarginLayoutParams(view);
+        params.leftMargin = leftMargin;
+        params.topMargin = topMargin;
+        params.rightMargin = rightMargin;
+        params.bottomMargin = bottomMargin;
+        view.setLayoutParams(params);
+    }
+
+    private static ViewGroup.MarginLayoutParams getMarginLayoutParams(View view) throws IllegalArgumentException {
+        ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+        if (layoutParams instanceof ViewGroup.MarginLayoutParams) {
+            return (ViewGroup.MarginLayoutParams) layoutParams;
+        } else {
+            throw new IllegalArgumentException("The view's parent must support margin parameters");
+        }
     }
 
     /**
@@ -99,7 +309,7 @@ public class IntrepidViewUtils {
 
     /**
      * Shows a Toast next to a view/button describing what it does
-     *
+     * <p>
      * This is basically copied over from ActionMenuItemView.onLongClick()
      *
      * @param anchorView The view where the toast will appear next to
@@ -149,7 +359,7 @@ public class IntrepidViewUtils {
     /**
      * In older version of android (&lt; 5.0), setting certain background drawable (mainly layer-lists) will cause view's
      * padding to reset. So we need to explicitly remember and restore those paddings
-     *
+     * <p>
      * https://code.google.com/p/android/issues/detail?id=27235
      *
      * @param view          The view whose background will be set

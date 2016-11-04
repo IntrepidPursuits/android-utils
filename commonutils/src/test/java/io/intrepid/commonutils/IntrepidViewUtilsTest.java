@@ -1,8 +1,11 @@
 package io.intrepid.commonutils;
 
+import android.annotation.TargetApi;
 import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,10 +15,22 @@ import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
 import static io.intrepid.commonutils.IntrepidViewUtils.getPositionInParent;
+import static io.intrepid.commonutils.IntrepidViewUtils.setHeight;
+import static io.intrepid.commonutils.IntrepidViewUtils.setLayoutWeight;
+import static io.intrepid.commonutils.IntrepidViewUtils.setMarginBottom;
+import static io.intrepid.commonutils.IntrepidViewUtils.setMarginEnd;
+import static io.intrepid.commonutils.IntrepidViewUtils.setMarginLeft;
+import static io.intrepid.commonutils.IntrepidViewUtils.setMarginRight;
+import static io.intrepid.commonutils.IntrepidViewUtils.setMarginStart;
+import static io.intrepid.commonutils.IntrepidViewUtils.setMarginTop;
+import static io.intrepid.commonutils.IntrepidViewUtils.setMargins;
 import static io.intrepid.commonutils.IntrepidViewUtils.setPaddingBottom;
 import static io.intrepid.commonutils.IntrepidViewUtils.setPaddingLeft;
 import static io.intrepid.commonutils.IntrepidViewUtils.setPaddingRight;
 import static io.intrepid.commonutils.IntrepidViewUtils.setPaddingTop;
+import static io.intrepid.commonutils.IntrepidViewUtils.setVisibilities;
+import static io.intrepid.commonutils.IntrepidViewUtils.setWidth;
+import static io.intrepid.commonutils.IntrepidViewUtils.setWidthAndHeight;
 import static io.intrepid.commonutils.IntrepidViewUtils.toggleVisibility;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
@@ -23,6 +38,29 @@ import static org.mockito.Mockito.when;
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP)
 public class IntrepidViewUtilsTest {
+
+    @Test
+    public void testSetVisibilities() throws Exception {
+        final View view1 = new View(RuntimeEnvironment.application);
+        final View view2 = new View(RuntimeEnvironment.application);
+        final View view3 = new View(RuntimeEnvironment.application);
+
+        setVisibilities(View.VISIBLE, view1, view2, view3);
+        assertViewsVisibility(View.VISIBLE, view1, view2, view3);
+
+        setVisibilities(View.INVISIBLE, view1, view2, view3);
+        assertViewsVisibility(View.INVISIBLE, view1, view2, view3);
+
+        setVisibilities(View.GONE, view1, view2, view3);
+        assertViewsVisibility(View.GONE, view1, view2, view3);
+    }
+
+    private static void assertViewsVisibility(int expectedVisibility, View... views) {
+        for (View view : views) {
+            assertEquals(expectedVisibility, view.getVisibility());
+
+        }
+    }
 
     @Test
     public void testToggleVisibilityGone() throws Exception {
@@ -49,6 +87,43 @@ public class IntrepidViewUtilsTest {
         view.setVisibility(View.INVISIBLE);
         toggleVisibility(view);
         assertEquals(View.VISIBLE, view.getVisibility());
+    }
+
+    @Test
+    public void testSetWidth() throws Exception {
+        final ViewGroup container = new FrameLayout(RuntimeEnvironment.application);
+        final View view = new View(RuntimeEnvironment.application);
+        container.addView(view);
+        setWidth(view, 50);
+        assertEquals(50, view.getLayoutParams().width);
+    }
+
+    @Test
+    public void testSetHeight() throws Exception {
+        final ViewGroup container = new FrameLayout(RuntimeEnvironment.application);
+        final View view = new View(RuntimeEnvironment.application);
+        container.addView(view);
+        setHeight(view, 50);
+        assertEquals(50, view.getLayoutParams().height);
+    }
+
+    @Test
+    public void testSetWidthAndHeight() throws Exception {
+        final ViewGroup container = new FrameLayout(RuntimeEnvironment.application);
+        final View view = new View(RuntimeEnvironment.application);
+        container.addView(view);
+        setWidthAndHeight(view, 50, 70);
+        assertEquals(50, view.getLayoutParams().width);
+        assertEquals(70, view.getLayoutParams().height);
+    }
+
+    @Test
+    public void testSetWeight() throws Exception {
+        final LinearLayout container = new LinearLayout(RuntimeEnvironment.application);
+        final View view = new View(RuntimeEnvironment.application);
+        container.addView(view);
+        setLayoutWeight(view, 5);
+        assertEquals(5, ((LinearLayout.LayoutParams) view.getLayoutParams()).weight, 0.0000001);
     }
 
     @Test
@@ -114,5 +189,87 @@ public class IntrepidViewUtilsTest {
         when(parentView.indexOfChild(childView)).thenReturn(5);
 
         assertEquals(5, getPositionInParent(childView));
+    }
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    @Test
+    public void testSetMarginStart() throws Exception {
+        final ViewGroup container = new FrameLayout(RuntimeEnvironment.application);
+        final View view = new View(RuntimeEnvironment.application);
+        container.addView(view);
+        setMarginStart(view, 50);
+        assertEquals(50, ((ViewGroup.MarginLayoutParams) view.getLayoutParams()).getMarginStart());
+        assertEquals(50, ((ViewGroup.MarginLayoutParams) view.getLayoutParams()).leftMargin);
+    }
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    @Test
+    public void testSetMarginEnd() throws Exception {
+        final ViewGroup container = new FrameLayout(RuntimeEnvironment.application);
+        final View view = new View(RuntimeEnvironment.application);
+        container.addView(view);
+        setMarginEnd(view, 50);
+        assertEquals(50, ((ViewGroup.MarginLayoutParams) view.getLayoutParams()).getMarginEnd());
+        assertEquals(50, ((ViewGroup.MarginLayoutParams) view.getLayoutParams()).rightMargin);
+    }
+
+    @Test
+    public void testSetMarginLeft() throws Exception {
+        final ViewGroup container = new FrameLayout(RuntimeEnvironment.application);
+        final View view = new View(RuntimeEnvironment.application);
+        container.addView(view);
+        setMarginLeft(view, 50);
+        assertEquals(50, ((ViewGroup.MarginLayoutParams) view.getLayoutParams()).leftMargin);
+    }
+
+    @Test
+    public void testSetMarginRight() throws Exception {
+        final ViewGroup container = new FrameLayout(RuntimeEnvironment.application);
+        final View view = new View(RuntimeEnvironment.application);
+        container.addView(view);
+        setMarginRight(view, 50);
+        assertEquals(50, ((ViewGroup.MarginLayoutParams) view.getLayoutParams()).rightMargin);
+    }
+
+    @Test
+    public void testSetMarginTop() throws Exception {
+        final ViewGroup container = new FrameLayout(RuntimeEnvironment.application);
+        final View view = new View(RuntimeEnvironment.application);
+        container.addView(view);
+        setMarginTop(view, 50);
+        assertEquals(50, ((ViewGroup.MarginLayoutParams) view.getLayoutParams()).topMargin);
+    }
+
+    @Test
+    public void testSetMarginBottom() throws Exception {
+        final ViewGroup container = new FrameLayout(RuntimeEnvironment.application);
+        final View view = new View(RuntimeEnvironment.application);
+        container.addView(view);
+        setMarginBottom(view, 50);
+        assertEquals(50, ((ViewGroup.MarginLayoutParams) view.getLayoutParams()).bottomMargin);
+    }
+
+    @Test
+    public void testSetMarginAll() throws Exception {
+        final ViewGroup container = new FrameLayout(RuntimeEnvironment.application);
+        final View view = new View(RuntimeEnvironment.application);
+        container.addView(view);
+        setMargins(view, 50);
+        assertEquals(50, ((ViewGroup.MarginLayoutParams) view.getLayoutParams()).leftMargin);
+        assertEquals(50, ((ViewGroup.MarginLayoutParams) view.getLayoutParams()).topMargin);
+        assertEquals(50, ((ViewGroup.MarginLayoutParams) view.getLayoutParams()).rightMargin);
+        assertEquals(50, ((ViewGroup.MarginLayoutParams) view.getLayoutParams()).bottomMargin);
+    }
+
+    @Test
+    public void testSetMarginIndividually() throws Exception {
+        final ViewGroup container = new FrameLayout(RuntimeEnvironment.application);
+        final View view = new View(RuntimeEnvironment.application);
+        container.addView(view);
+        setMargins(view, 10, 20, 30, 40);
+        assertEquals(10, ((ViewGroup.MarginLayoutParams) view.getLayoutParams()).leftMargin);
+        assertEquals(20, ((ViewGroup.MarginLayoutParams) view.getLayoutParams()).topMargin);
+        assertEquals(30, ((ViewGroup.MarginLayoutParams) view.getLayoutParams()).rightMargin);
+        assertEquals(40, ((ViewGroup.MarginLayoutParams) view.getLayoutParams()).bottomMargin);
     }
 }
