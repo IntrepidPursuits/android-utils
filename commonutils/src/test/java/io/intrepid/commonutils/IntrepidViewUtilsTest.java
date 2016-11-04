@@ -17,13 +17,13 @@ import org.robolectric.annotation.Config;
 import static io.intrepid.commonutils.IntrepidViewUtils.getPositionInParent;
 import static io.intrepid.commonutils.IntrepidViewUtils.setHeight;
 import static io.intrepid.commonutils.IntrepidViewUtils.setLayoutWeight;
-import static io.intrepid.commonutils.IntrepidViewUtils.setMargin;
 import static io.intrepid.commonutils.IntrepidViewUtils.setMarginBottom;
 import static io.intrepid.commonutils.IntrepidViewUtils.setMarginEnd;
 import static io.intrepid.commonutils.IntrepidViewUtils.setMarginLeft;
 import static io.intrepid.commonutils.IntrepidViewUtils.setMarginRight;
 import static io.intrepid.commonutils.IntrepidViewUtils.setMarginStart;
 import static io.intrepid.commonutils.IntrepidViewUtils.setMarginTop;
+import static io.intrepid.commonutils.IntrepidViewUtils.setMargins;
 import static io.intrepid.commonutils.IntrepidViewUtils.setPaddingBottom;
 import static io.intrepid.commonutils.IntrepidViewUtils.setPaddingLeft;
 import static io.intrepid.commonutils.IntrepidViewUtils.setPaddingRight;
@@ -46,19 +46,20 @@ public class IntrepidViewUtilsTest {
         final View view3 = new View(RuntimeEnvironment.application);
 
         setVisibilities(View.VISIBLE, view1, view2, view3);
-        assertEquals(View.VISIBLE, view1.getVisibility());
-        assertEquals(View.VISIBLE, view2.getVisibility());
-        assertEquals(View.VISIBLE, view3.getVisibility());
+        assertViewsVisibility(View.VISIBLE, view1, view2, view3);
 
         setVisibilities(View.INVISIBLE, view1, view2, view3);
-        assertEquals(View.INVISIBLE, view1.getVisibility());
-        assertEquals(View.INVISIBLE, view2.getVisibility());
-        assertEquals(View.INVISIBLE, view3.getVisibility());
+        assertViewsVisibility(View.INVISIBLE, view1, view2, view3);
 
         setVisibilities(View.GONE, view1, view2, view3);
-        assertEquals(View.GONE, view1.getVisibility());
-        assertEquals(View.GONE, view2.getVisibility());
-        assertEquals(View.GONE, view3.getVisibility());
+        assertViewsVisibility(View.GONE, view1, view2, view3);
+    }
+
+    private static void assertViewsVisibility(int expectedVisibility, View... views) {
+        for (View view : views) {
+            assertEquals(expectedVisibility, view.getVisibility());
+
+        }
     }
 
     @Test
@@ -253,7 +254,7 @@ public class IntrepidViewUtilsTest {
         final ViewGroup container = new FrameLayout(RuntimeEnvironment.application);
         final View view = new View(RuntimeEnvironment.application);
         container.addView(view);
-        setMargin(view, 50);
+        setMargins(view, 50);
         assertEquals(50, ((ViewGroup.MarginLayoutParams) view.getLayoutParams()).leftMargin);
         assertEquals(50, ((ViewGroup.MarginLayoutParams) view.getLayoutParams()).topMargin);
         assertEquals(50, ((ViewGroup.MarginLayoutParams) view.getLayoutParams()).rightMargin);
@@ -265,7 +266,7 @@ public class IntrepidViewUtilsTest {
         final ViewGroup container = new FrameLayout(RuntimeEnvironment.application);
         final View view = new View(RuntimeEnvironment.application);
         container.addView(view);
-        setMargin(view, 10, 20, 30, 40);
+        setMargins(view, 10, 20, 30, 40);
         assertEquals(10, ((ViewGroup.MarginLayoutParams) view.getLayoutParams()).leftMargin);
         assertEquals(20, ((ViewGroup.MarginLayoutParams) view.getLayoutParams()).topMargin);
         assertEquals(30, ((ViewGroup.MarginLayoutParams) view.getLayoutParams()).rightMargin);

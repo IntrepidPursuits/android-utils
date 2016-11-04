@@ -236,7 +236,7 @@ public class IntrepidViewUtils {
      * @param newMargin the margin in pixel that will be applied to all sides
      * @throws IllegalArgumentException If the view's parent container does not support margin params
      */
-    public static void setMargin(@NonNull View view, int newMargin) throws IllegalArgumentException {
+    public static void setMargins(@NonNull View view, int newMargin) throws IllegalArgumentException {
         ViewGroup.MarginLayoutParams params = getMarginLayoutParams(view);
         params.leftMargin = newMargin;
         params.topMargin = newMargin;
@@ -255,11 +255,11 @@ public class IntrepidViewUtils {
      * @param bottomMargin the new bottom margin in pixels
      * @throws IllegalArgumentException If the view's parent container does not support margin params
      */
-    public static void setMargin(@NonNull View view,
-                                 int leftMargin,
-                                 int topMargin,
-                                 int rightMargin,
-                                 int bottomMargin) throws IllegalArgumentException {
+    public static void setMargins(@NonNull View view,
+                                  int leftMargin,
+                                  int topMargin,
+                                  int rightMargin,
+                                  int bottomMargin) throws IllegalArgumentException {
         ViewGroup.MarginLayoutParams params = getMarginLayoutParams(view);
         params.leftMargin = leftMargin;
         params.topMargin = topMargin;
