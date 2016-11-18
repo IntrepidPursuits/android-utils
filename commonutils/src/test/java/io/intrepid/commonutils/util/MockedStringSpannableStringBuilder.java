@@ -15,8 +15,6 @@ import static org.mockito.Matchers.anyInt;
  * Mocks a {@link SpannableStringBuilder} and implements some of its functionality through a {@link String}.
  *
  * Just call {@link #setup()} in the test's setup method to be able to use this mocked class.
- *
- * Created by Anton Spaans on 5/6/16.
  */
 public class MockedStringSpannableStringBuilder {
     public static void setup() {

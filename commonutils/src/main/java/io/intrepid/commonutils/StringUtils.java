@@ -1,11 +1,7 @@
 package io.intrepid.commonutils;
 
-import android.os.Build;
 import android.support.annotation.NonNull;
-import android.text.Editable;
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
-import android.text.TextUtils;
+import android.support.annotation.Nullable;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,14 +13,15 @@ import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Pattern;
 
 /**
  * A utility class bundling a set of handy to use methods that deal with {@link String},
- * {@link CharSequence}, {@link android.text.Spannable}, etc.
+ * {@link CharSequence}, etc.
  */
-@SuppressWarnings("unused")
+@SuppressWarnings({ "unused", "WeakerAccess" })
 public abstract class StringUtils {
     private static final ThreadLocal<Pattern[]> MATCHING_PATTERNS = new ThreadLocal<Pattern[]>() {
         @Override
@@ -44,6 +41,69 @@ public abstract class StringUtils {
         }
     };
 
+    // region TextUtils methods
+    // These methods are copied from TextUtils class so that we don't need to mock them when running unit tests
+
+    /**
+     * Returns true if the string is null or 0-length.
+     *
+     * @param str the string to be examined
+     * @return true if str is null or zero length
+     */
+    public static boolean isEmpty(@Nullable CharSequence str) {
+        return str == null || str.length() == 0;
+    }
+
+    /**
+     * Returns true if a and b are equal, including if they are both null.
+     * <p><i>Note: In platform versions 1.1 and earlier, this method only worked well if
+     * both the arguments were instances of String.</i></p>
+     *
+     * @param a first CharSequence to check
+     * @param b second CharSequence to check
+     * @return true if a and b are equal
+     */
+    public static boolean equals(CharSequence a, CharSequence b) {
+        if (a == b) {
+            return true;
+        }
+        int length;
+        if (a != null && b != null && (length = a.length()) == b.length()) {
+            if (a instanceof String && b instanceof String) {
+                return a.equals(b);
+            } else {
+                for (int i = 0; i < length; i++) {
+                    if (a.charAt(i) != b.charAt(i)) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns a string containing the tokens joined by delimiters.
+     *
+     * @param tokens an array objects to be joined. Strings will be formed from
+     *               the objects by calling object.toString().
+     */
+    public static String join(CharSequence delimiter, Iterable tokens) {
+        StringBuilder sb = new StringBuilder();
+        Iterator<?> it = tokens.iterator();
+        if (it.hasNext()) {
+            sb.append(it.next());
+            while (it.hasNext()) {
+                sb.append(delimiter);
+                sb.append(it.next());
+            }
+        }
+        return sb.toString();
+    }
+
+    // endregion
+
     /**
      * Removes any trailing and leading whitespaces from the input characters and returns
      * the resulting characters without trailing and leading whitespaces.
@@ -53,7 +113,7 @@ public abstract class StringUtils {
      * @return The stripped characters.
      */
     public static <T extends CharSequence> T stripSurroundingWhiteSpace(T s) {
-        if (TextUtils.isEmpty(s)) {
+        if (isEmpty(s)) {
             return s;
         }
 
@@ -97,7 +157,7 @@ public abstract class StringUtils {
      * and not a new line.
      */
     public static String replaceNonBoringCharacters(@NonNull CharSequence string, @NonNull String replacement) {
-        return TextUtils.isEmpty(string) ? "" : MATCHING_PATTERNS.get()[0].matcher(string).replaceAll(replacement);
+        return isEmpty(string) ? "" : MATCHING_PATTERNS.get()[0].matcher(string).replaceAll(replacement);
     }
 
     /**
@@ -118,7 +178,7 @@ public abstract class StringUtils {
      * @return True only if the given string is a valid email address.
      */
     public static boolean isEmailAddress(CharSequence email) {
-        return !TextUtils.isEmpty(email) && MATCHING_PATTERNS.get()[2].matcher(email).matches();
+        return !isEmpty(email) && MATCHING_PATTERNS.get()[2].matcher(email).matches();
     }
 
     /**
@@ -158,7 +218,7 @@ public abstract class StringUtils {
             return null;
         }
 
-        if (TextUtils.isEmpty(separatedList)) {
+        if (isEmpty(separatedList)) {
             return new String[0];
         }
 
@@ -205,7 +265,7 @@ public abstract class StringUtils {
     public static CharSequence separateItemsWith(CharSequence separator, CharSequence... items) {
         StringBuilder sb = new StringBuilder();
         for (CharSequence item : items) {
-            if (TextUtils.isEmpty(item)) {
+            if (isEmpty(item)) {
                 continue;
             }
 
@@ -270,7 +330,7 @@ public abstract class StringUtils {
             return string;
         }
 
-        if (TextUtils.isEmpty(string) && TextUtils.isEmpty(separator)) {
+        if (isEmpty(string) && isEmpty(separator)) {
             return string;
         }
 
@@ -369,17 +429,6 @@ public abstract class StringUtils {
     }
 
     /**
-     * Has the same function as {@link java.lang.String#equals(Object)} but it works on CharSequences as well.
-     *
-     * @param string1 First string.
-     * @param string2 Second string.
-     * @return True if the two strings are equal.
-     */
-    public static boolean equals(CharSequence string1, CharSequence string2) {
-        return compare(string1, string2) == 0;
-    }
-
-    /**
      * Has the same function as {@link java.lang.String#compareTo(String)} but it works on CharSequences as well.
      *
      * @param cs1 First string.
@@ -395,11 +444,9 @@ public abstract class StringUtils {
 
         if (cs1 == null && cs2 == null) {
             return 0;
-        }
-        else if (cs1 == null) {
+        } else if (cs1 == null) {
             return -1;
-        }
-        else if (cs2 == null) {
+        } else if (cs2 == null) {
             return 1;
         }
 
@@ -417,63 +464,6 @@ public abstract class StringUtils {
         }
 
         return len1 - len2;
-    }
-
-    /**
-     * Appends a string to another string.
-     * <p/>
-     * The 'string' input parameter may change if the other string can be appended in place.
-     *
-     * @param string         The string to be appended.
-     * @param stringToAppend The string to append.
-     * @return The appended string. The returned object may be the same as 'string'.
-     */
-    public static CharSequence append(CharSequence string, CharSequence stringToAppend) {
-        if (string instanceof Editable) {
-            return ((Editable) string).append(stringToAppend);
-        } else {
-            SpannableStringBuilder sb = (string != null) ? new SpannableStringBuilder(string) : new SpannableStringBuilder();
-            return sb.append(stringToAppend);
-        }
-    }
-
-    /**
-     * Appends a character to a string.
-     * <p/>
-     * The 'string' input parameter may change if the character can be appended in place.
-     *
-     * @param string       The string to be appended.
-     * @param charToAppend The character to append.
-     * @return The appended string. This may be the same as 'string'.
-     */
-    public static CharSequence append(CharSequence string, char charToAppend) {
-        if (string instanceof Editable) {
-            return ((Editable) string).append(charToAppend);
-        } else {
-            SpannableStringBuilder sb = (string != null) ? new SpannableStringBuilder(string) : new SpannableStringBuilder();
-            return sb.append(charToAppend);
-        }
-    }
-
-    /**
-     * Implements the {@link android.text.SpannableStringBuilder#append(CharSequence, Object, int)} for versions below api-level 21.
-     *
-     * @param builder The build to which 'text' will be appended.
-     * @param text    The text to append.
-     * @param what    The object to be spanned over the appended text.
-     * @param flags   ee {@link Spanned}.
-     * @return The 'builder' parameter.
-     */
-    public static SpannableStringBuilder append(SpannableStringBuilder builder, CharSequence text, Object what, int flags) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            return builder.append(text, what, flags);
-        } else {
-            final int start = builder.length();
-            builder.append(text);
-            builder.setSpan(what, start, builder.length(), flags);
-
-            return builder;
-        }
     }
 
     /**

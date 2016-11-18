@@ -1,21 +1,11 @@
 package io.intrepid.commonutils;
 
-import android.text.SpannableStringBuilder;
-import android.text.TextUtils;
-
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
-
-import io.intrepid.commonutils.util.MockedStringSpannableStringBuilder;
-import io.intrepid.commonutils.util.MockedTextUtils;
+import java.util.List;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -27,16 +17,36 @@ import static org.junit.Assert.fail;
 /**
  * Tests {@link StringUtils}
  */
-@RunWith(PowerMockRunner.class)
-@PowerMockIgnore({"org.mockito.*", "android.*"})
-@PrepareForTest({TextUtils.class, SpannableStringBuilder.class, StringUtils.class })
 public class StringUtilsTest {
 
-    @Before
-    public void setup()
-    {
-        MockedTextUtils.setup();
-        MockedStringSpannableStringBuilder.setup();
+    @Test
+    public void testIsEmpty() {
+        assertFalse(StringUtils.isEmpty("test"));
+        assertTrue(StringUtils.isEmpty(null));
+        assertTrue(StringUtils.isEmpty(""));
+    }
+
+    @Test
+    public void testEquals() {
+        assertTrue(StringUtils.equals("String1", "String1"));
+    }
+
+    @Test
+    public void testNotEquals() {
+        assertFalse(StringUtils.equals("String1000", "String1"));
+    }
+
+    @Test
+    public void testEqualsNull() {
+        assertFalse(StringUtils.equals("String", null));
+        assertFalse(StringUtils.equals(null, "String"));
+        assertTrue(StringUtils.equals(null, null));
+    }
+
+    @Test
+    public void testJoin() {
+        List<String> strings = Arrays.asList("a", "bb", "ccc", "d");
+        assertEquals("a|bb|ccc|d", StringUtils.join("|", strings));
     }
 
     @Test
@@ -124,8 +134,7 @@ public class StringUtilsTest {
     public void testStringToEnumFail() {
         try {
             assertEquals(TestEnum.TEST_ENUM2, StringUtils.toEnum(TestEnum.class, "HELLO"));
-        }
-        catch (IllegalArgumentException iae) {
+        } catch (IllegalArgumentException iae) {
             // OK
             return;
         }
@@ -154,47 +163,48 @@ public class StringUtilsTest {
 
     @Test
     public void testSeparateItemsWith() {
-        String expected =  "Hello, This, is, my name";
+        String expected = "Hello, This, is, my name";
         assertEquals(0, StringUtils.compare(expected, StringUtils.separateItemsWith(", ", "Hello", "This", null, "is", "", "my name")));
     }
 
 
     @Test
     public void separateItemsAsStringsWith() {
-        String expected =  "10, Hello, This, is, my name";
-        assertEquals(expected, StringUtils.separateItemsAsStringsWith(", ", Arrays.asList(10, "Hello", "This", null, "is", "", "my name")).toString());
+        String expected = "10, Hello, This, is, my name";
+        assertEquals(expected, StringUtils.separateItemsAsStringsWith(", ", Arrays.asList(10, "Hello", "This", null, "is", "", "my name"))
+                .toString());
     }
 
     @Test
-    public void testRepeat1(){
+    public void testRepeat1() {
         String expected = "--";
         assertEquals(expected, StringUtils.repeat(null, "-", 3));
     }
 
     @Test
-    public void testRepeat2(){
+    public void testRepeat2() {
         String expected = "Test-Test-Test";
         assertEquals(expected, StringUtils.repeat("Test", "-", 3));
     }
 
     @Test
-    public void testRepeat3(){
+    public void testRepeat3() {
         String expected = "TestTestTest";
         assertEquals(expected, StringUtils.repeat("Test", null, 3));
     }
 
     @Test
-    public void testRepeat4(){
+    public void testRepeat4() {
         assertEquals(null, StringUtils.repeat(null, null, 3));
     }
 
     @Test
-    public void testRepeat5(){
+    public void testRepeat5() {
         assertEquals("", StringUtils.repeat("a", "b", 0));
     }
 
     @Test
-    public void testRepeat6(){
+    public void testRepeat6() {
         String expected = "Test";
         assertEquals(expected, StringUtils.repeat(expected, "-", 1));
     }
@@ -235,16 +245,6 @@ public class StringUtilsTest {
     }
 
     @Test
-    public void testEquals() {
-        assertTrue(StringUtils.equals("String1", "String1"));
-    }
-
-    @Test
-    public void testNotEquals() {
-        assertFalse(StringUtils.equals("String1000", "String1"));
-    }
-
-    @Test
     public void testIndexOf1() {
         assertEquals("String1".indexOf('g', 2), StringUtils.indexOf("String1", 'g', 2));
     }
@@ -255,25 +255,12 @@ public class StringUtilsTest {
     }
 
     @Test
-    public void testAppend() throws Exception {
-        CharSequence expected = "String1String2";
-
-        assertEquals(0, StringUtils.compare(expected, StringUtils.append("String1", "String2")));
-    }
-
-    @Test
-    public void testAppendChar() throws Exception {
-        CharSequence expected = "String1S";
-
-        assertEquals(0, StringUtils.compare(expected, StringUtils.append("String1", 'S')));
-    }
-
-    @Test
     public void testIS2StringSmall() throws Exception {
-        final String expected ="This is the expected string.";
+        final String expected = "This is the expected string.";
 
         InputStream is = new InputStream() {
             int pos = -1;
+
             @Override
             public int read() throws IOException {
                 final int nextPos = ++pos;
@@ -286,7 +273,7 @@ public class StringUtilsTest {
 
     @Test
     public void testIS2StringLarge() throws Exception {
-        String chunk ="This is the expected string.\n";
+        String chunk = "This is the expected string.\n";
         for (int i = 0; i < 10; i++) {
             chunk += chunk;
         }

@@ -1,4 +1,3 @@
-apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.android.library'
 
 android {
@@ -28,31 +27,24 @@ ext.mavenGroupId = 'io.intrepid.commonutils'
 
 apply from: 'publish.gradle'
 
-def supportVersion = '24.2.0'
-def rxJavaVersion = '1.1.9'
-def rxAndroidVersion = '1.2.1'
-def junitVersion = '4.12'
-def mockitoVersion = '1.10.19'
-def powerMockVersion = '1.6.5'
-def roboElectricVersion = '3.0'
-
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    def supportVersion = '24.2.0'
     compile "com.android.support:appcompat-v7:$supportVersion"
 
-    //Rx
-    compile "io.reactivex:rxjava:$rxJavaVersion"
-    compile "io.reactivex:rxandroid:$rxAndroidVersion"
-
     // Unit testing dependencies
+    def junitVersion = '4.12'
     testCompile "junit:junit:$junitVersion"
 
     // Set this dependency if you want to use Mockito
+    def mockitoVersion = '1.10.19'
+    def powerMockVersion = '1.6.5'
     testCompile "org.mockito:mockito-all:$mockitoVersion"
     testCompile "org.powermock:powermock-module-junit4:$powerMockVersion"
     testCompile "org.powermock:powermock-api-mockito:$powerMockVersion"
     testCompile "org.powermock:powermock-classloading-xstream:$powerMockVersion"
 
-    // RoboElectric
-    testCompile "org.robolectric:robolectric:$roboElectricVersion"
+    // Robolectric
+    def robolectricVersion = '3.0'
+    testCompile "org.robolectric:robolectric:$robolectricVersion"
 }
