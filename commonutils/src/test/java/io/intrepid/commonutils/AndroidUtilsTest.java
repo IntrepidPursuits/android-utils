@@ -8,7 +8,7 @@ import android.util.DisplayMetrics;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import static io.intrepid.commonutils.AndroidUtils.convertDpToPixel;
@@ -16,7 +16,7 @@ import static io.intrepid.commonutils.AndroidUtils.convertPixelsToDp;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
-@RunWith(RobolectricGradleTestRunner.class)
+@RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP)
 public class AndroidUtilsTest {
 
