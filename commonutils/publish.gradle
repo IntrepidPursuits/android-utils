@@ -12,10 +12,14 @@ def getArtifactPath() {
     return project.buildDir.absolutePath + "/outputs/aar/" + project.archivesBaseName + "-release.aar"
 }
 
+configurations {
+    javadocDeps
+}
+
 task androidJavadocs(type: Javadoc) {
     source = android.sourceSets.main.java.srcDirs
-    failOnError = false
     classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    classpath += configurations.javadocDeps
 }
 
 task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
@@ -28,14 +32,14 @@ task androidSourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
 }
 
-task androidReleaseJar(type: Jar, dependsOn: assembleRelease) {
+task androidReleaseJar(type: Jar, dependsOn: 'assembleRelease') {
     from android.sourceSets.main.java.srcDirs
     exclude '**/BuildConfig.class'
     exclude '**/R.class'
     exclude '**/R$*.class'
 }
 
-publish.dependsOn assembleRelease
+publish.dependsOn 'assembleRelease'
 
 publishing {
     repositories {
@@ -59,7 +63,7 @@ publishing {
             version android.defaultConfig.versionName
 
             artifact(androidSourcesJar)
-            //artifact(androidJavadocsJar)
+            artifact(androidJavadocsJar)
             //artifact(androidReleaseJar)
             artifact(getArtifactPath())
 

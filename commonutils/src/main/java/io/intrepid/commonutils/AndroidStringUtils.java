@@ -13,7 +13,7 @@ import android.text.Spanned;
 public abstract class AndroidStringUtils {
     /**
      * Appends a string to another string.
-     * <p/>
+     * <p>
      * The 'string' input parameter may change if the other string can be appended in place.
      *
      * @param string         The string to be appended.
@@ -32,7 +32,7 @@ public abstract class AndroidStringUtils {
 
     /**
      * Appends a character to a string.
-     * <p/>
+     * <p>
      * The 'string' input parameter may change if the character can be appended in place.
      *
      * @param string       The string to be appended.
