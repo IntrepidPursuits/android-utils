@@ -3,24 +3,19 @@ apply from: 'coverage.gradle'
 
 android {
     compileSdkVersion 24
-    buildToolsVersion "24.0.2"
+    buildToolsVersion "24.0.3"
 
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 24
         versionCode 1
-        versionName "0.1.0"
+        versionName "0.2.0"
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
@@ -30,8 +25,9 @@ apply from: 'publish.gradle'
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    def supportVersion = '24.2.0'
-    compile "com.android.support:appcompat-v7:$supportVersion"
+    def supportVersion = '24.2.1'
+    compile "com.android.support:support-compat:$supportVersion"
+    compile "com.android.support:support-annotations:$supportVersion"
 
     // Unit testing dependencies
     def junitVersion = '4.12'
@@ -39,7 +35,7 @@ dependencies {
 
     // Set this dependency if you want to use Mockito
     def mockitoVersion = '1.10.19'
-    def powerMockVersion = '1.6.5'
+    def powerMockVersion = '1.6.6'
     testCompile "org.mockito:mockito-all:$mockitoVersion"
     testCompile "org.powermock:powermock-module-junit4:$powerMockVersion"
     testCompile "org.powermock:powermock-api-mockito:$powerMockVersion"
@@ -48,4 +44,6 @@ dependencies {
     // Robolectric
     def robolectricVersion = '3.1.4'
     testCompile "org.robolectric:robolectric:$robolectricVersion"
+
+    javadocDeps "com.android.support:support-annotations:$supportVersion"
 }

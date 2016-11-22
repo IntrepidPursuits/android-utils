@@ -152,7 +152,7 @@ public abstract class StringUtils {
      * @param replacement The replacement.
      * @return The string without boring characters.
      * @see android.text.BoringLayout
-     * <p/>
+     * <p>
      * Boring characters are all character less than \u0590 and not a tab
      * and not a new line.
      */
@@ -252,7 +252,7 @@ public abstract class StringUtils {
      * Returns the provided list of items as a String where each item is separated by the given separator string.
      * Items that are empty or null are skipped entirely (i.e. there won't be two or more separators directly
      * following each other).
-     * <p/>
+     * <p>
      * E.g.
      * separateItemsWith(", ", "Hello", "This", null, "is", "", "my name")
      * will return
@@ -416,7 +416,7 @@ public abstract class StringUtils {
      *
      * @param string The string to check.
      * @param c      The character to look for.
-     * @param start  The index to start at (must be 0 <= stat < string.length())
+     * @param start  The index to start at (must be 0 &le; stat &lt; string.length())
      * @return The first index on or after 'start' on which the character has been found or -1 if not found.
      */
     public static int indexOf(@NonNull CharSequence string, char c, int start) {
