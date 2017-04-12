@@ -19,8 +19,6 @@ android {
     }
 }
 
-ext.mavenGroupId = 'io.intrepid.commonutils'
-
 apply from: 'publish.gradle'
 
 dependencies {
