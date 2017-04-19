@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 apply from: 'coverage.gradle'
+apply plugin: 'io.intrepid.static-analysis'
 
 android {
     compileSdkVersion 25
