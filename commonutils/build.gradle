@@ -30,17 +30,9 @@ dependencies {
     // Unit testing dependencies
     def junitVersion = '4.12'
     testCompile "junit:junit:$junitVersion"
-
-    // Set this dependency if you want to use Mockito
-    def mockitoVersion = '1.10.19'
-    def powerMockVersion = '1.6.6'
-    testCompile "org.mockito:mockito-all:$mockitoVersion"
-    testCompile "org.powermock:powermock-module-junit4:$powerMockVersion"
-    testCompile "org.powermock:powermock-api-mockito:$powerMockVersion"
-    testCompile "org.powermock:powermock-classloading-xstream:$powerMockVersion"
-
-    // Robolectric
-    def robolectricVersion = '3.1.4'
+    def mockitoVersion = '2.8.9'
+    testCompile "org.mockito:mockito-core:$mockitoVersion"
+    def robolectricVersion = '3.3.2'
     testCompile "org.robolectric:robolectric:$robolectricVersion"
 
     javadocDeps "com.android.support:support-annotations:$supportVersion"
