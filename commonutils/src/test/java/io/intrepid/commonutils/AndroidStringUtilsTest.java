@@ -6,11 +6,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
+import java.net.URISyntaxException;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
 /**
  * Tests {@link AndroidStringUtils}
@@ -33,38 +33,38 @@ public class AndroidStringUtilsTest {
     }
 
     @Test
-    public void testValidUrl() {
-        final String VALID_URL = "http://www.example.com";
-        Uri uri = AndroidStringUtils.parseHttpUriFromString(VALID_URL);
+    public void testValidUri() throws URISyntaxException {
+        final String VALID_URI = "http://www.example.com";
+        Uri uri = AndroidStringUtils.parseHttpUriFromString(VALID_URI);
 
-        assertNotNull(uri);
-        assertThat(uri.toString(), is(VALID_URL));
+        assertThat(uri.toString(), is(VALID_URI));
     }
 
     @Test
-    public void testValidHttpUrlMissingProtocol() {
-        final String VALID_URL_MISSING_PROTOCOL = "www.example.com";
-        Uri uri = AndroidStringUtils.parseHttpUriFromString(VALID_URL_MISSING_PROTOCOL);
+    public void testValidHttpUriMissingProtocol() throws URISyntaxException {
+        final String VALID_URI_MISSING_PROTOCOL = "www.example.com";
+        Uri uri = AndroidStringUtils.parseHttpUriFromString(VALID_URI_MISSING_PROTOCOL);
 
-        assertNotNull(uri);
-        assertThat(uri.toString(), is("http://" + VALID_URL_MISSING_PROTOCOL));
+        assertThat(uri.toString(), is("http://" + VALID_URI_MISSING_PROTOCOL));
     }
 
     @Test
-    public void testValidHttpsUrlMissingProtocol() {
-        final String VALID_URL_MISSING_PROTOCOL = "www.example.com";
-        Uri uri = AndroidStringUtils.parseHttpsUriFromString(VALID_URL_MISSING_PROTOCOL);
+    public void testValidHttpsUriMissingProtocol() throws URISyntaxException {
+        final String VALID_URI_MISSING_PROTOCOL = "www.example.com";
+        Uri uri = AndroidStringUtils.parseHttpsUriFromString(VALID_URI_MISSING_PROTOCOL);
 
-        assertNotNull(uri);
-        assertThat(uri.toString(), is("https://" + VALID_URL_MISSING_PROTOCOL));
+        assertThat(uri.toString(), is("https://" + VALID_URI_MISSING_PROTOCOL));
     }
 
-    @Test
-    public void testInvalidUrl() {
-        final String INVALID_URL = "<not a url>";
-        Uri uri = AndroidStringUtils.parseHttpUriFromString(INVALID_URL);
+    @Test(expected = URISyntaxException.class)
+    public void testInvalidUri() throws URISyntaxException {
+        AndroidStringUtils.parseHttpUriFromString("<invalid uri>");
+    }
 
-        assertNull(uri);
+    @Test(expected = NullPointerException.class)
+    public void testNullUri() throws URISyntaxException {
+        // Intentionally pass null to simulate what could happen internally
+        //noinspection ConstantConditions
+        AndroidStringUtils.parseHttpUriFromString(null);
     }
 }
-

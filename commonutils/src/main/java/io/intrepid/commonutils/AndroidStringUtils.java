@@ -3,15 +3,14 @@ package io.intrepid.commonutils;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.Html;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
-import android.util.Log;
 import android.util.Patterns;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 
 /**
  * String utility methods that touches Android classes. Methods inside this class
@@ -108,31 +107,26 @@ public abstract class AndroidStringUtils {
      *
      * @param inputUri The String that you want to try parsing as a Uri
      * @param scheme   The scheme (e.g. 'http://', 'https://', 'ftp://') to prepend to this inputUri if it did not have a scheme
-     * @return A valid, well-formed Uri, or null if the inputUri parameter was not a valid URI
+     * @return A valid, well-formed Uri, or an exception if the inputUri parameter was not a valid URI
      */
-    @Nullable
-    public static Uri parseUriFromString(@NonNull String inputUri, @NonNull String scheme) {
-        try {
-            URI uri = new URI(inputUri);
-            if (uri.getScheme() == null) {
-                uri = new URI(scheme + inputUri);
-            }
-            return Uri.parse(uri.toString());
-        } catch (Exception e) {
-            Log.e(AndroidStringUtils.class.getSimpleName(), "Could not parse URI", e);
-            return null;
+    @NonNull
+    public static Uri parseUriFromString(@NonNull String inputUri, @NonNull String scheme) throws NullPointerException, URISyntaxException {
+        URI uri = new URI(inputUri);
+        if (uri.getScheme() == null) {
+            uri = new URI(scheme + inputUri);
         }
+        return Uri.parse(uri.toString());
     }
 
     /**
      * Convenience function to parse http Uris
      *
      * @param uri The String that you want to try parsing as a Uri
-     * @return A valid, well-formed Uri, or null if the uri parameter was not a valid URI
+     * @return A valid, well-formed Uri, or an exception if the inputUri parameter was not a valid URI
      * @see #parseUriFromString
      */
-    @Nullable
-    public static Uri parseHttpUriFromString(@NonNull String uri) {
+    @NonNull
+    public static Uri parseHttpUriFromString(@NonNull String uri) throws NullPointerException, URISyntaxException {
         return parseUriFromString(uri, "http://");
     }
 
@@ -140,11 +134,11 @@ public abstract class AndroidStringUtils {
      * Convenience function to parse https Uris
      *
      * @param uri The String that you want to try parsing as a Uri
-     * @return A valid, well-formed Uri, or null if the uri parameter was not a valid URI
+     * @return A valid, well-formed Uri, or an exception if the inputUri parameter was not a valid URI
      * @see #parseUriFromString
      */
-    @Nullable
-    public static Uri parseHttpsUriFromString(@NonNull String uri) {
+    @NonNull
+    public static Uri parseHttpsUriFromString(@NonNull String uri) throws NullPointerException, URISyntaxException {
         return parseUriFromString(uri, "https://");
     }
 }
