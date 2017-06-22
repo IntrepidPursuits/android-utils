@@ -1,10 +1,18 @@
 package io.intrepid.commonutils;
 
+import android.net.Uri;
 import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.Html;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.util.Patterns;
+
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 /**
  * String utility methods that touches Android classes. Methods inside this class
@@ -77,6 +85,7 @@ public abstract class AndroidStringUtils {
     /**
      * Implements {@link Html#fromHtml(String, int)}. Prior to API level 24, the flags will not be
      * applied and this method simply calls through to {@link Html#fromHtml(String)}.
+     *
      * @param source The string to be styled with HTML tags
      * @param flags  Any behavior flags in {@link Html}, or 0 for default behavior.
      * @return The text styled with HTML tags.
@@ -88,5 +97,38 @@ public abstract class AndroidStringUtils {
             //noinspection deprecation
             return Html.fromHtml(source);
         }
+    }
+
+    /**
+     * Attempts to parse the given String to a Uri.
+     * This method exists because standard pattern matching functions (such as {@link Patterns#WEB_URL} treat addresses
+     * that omit a protocol (i.e. beginning with 'www') as valid.  However, if you try to actually use this Uri
+     * (e.g. calling CustomTabsIntent.launchUrl(Context, Uri)), it won't work.
+     * <p>
+     * This method will look for the case where the URL string is missing the protocol, and will prepend it if necessary.
+     *
+     * @param url - The String that you want to try parsing as a Uri
+     * @return A valid, well-formed Uri, or null if the url parameter was not valid
+     */
+    @Nullable
+    public static Uri parseUriFromString(@NonNull String url) {
+        URL validatedUrl = null;
+        try {
+            validatedUrl = new URL(url);
+        } catch (MalformedURLException e) {
+            try {
+                validatedUrl = new URL("http://" + url);
+            } catch (MalformedURLException ignored) {
+            }
+        }
+
+        if (validatedUrl != null) {
+            try {
+                return Uri.parse(validatedUrl.toURI().toString());
+            } catch (URISyntaxException ignored) {
+            }
+        }
+
+        return null;
     }
 }
