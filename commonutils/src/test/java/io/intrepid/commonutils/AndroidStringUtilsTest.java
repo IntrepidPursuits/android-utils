@@ -35,25 +35,34 @@ public class AndroidStringUtilsTest {
     @Test
     public void testValidUrl() {
         final String VALID_URL = "http://www.example.com";
-        Uri uri = AndroidStringUtils.parseUriFromString(VALID_URL);
+        Uri uri = AndroidStringUtils.parseHttpUriFromString(VALID_URL);
 
         assertNotNull(uri);
         assertThat(uri.toString(), is(VALID_URL));
     }
 
     @Test
-    public void testValidUrlMissingProtocol() {
+    public void testValidHttpUrlMissingProtocol() {
         final String VALID_URL_MISSING_PROTOCOL = "www.example.com";
-        Uri uri = AndroidStringUtils.parseUriFromString(VALID_URL_MISSING_PROTOCOL);
+        Uri uri = AndroidStringUtils.parseHttpUriFromString(VALID_URL_MISSING_PROTOCOL);
 
         assertNotNull(uri);
         assertThat(uri.toString(), is("http://" + VALID_URL_MISSING_PROTOCOL));
     }
 
     @Test
+    public void testValidHttpsUrlMissingProtocol() {
+        final String VALID_URL_MISSING_PROTOCOL = "www.example.com";
+        Uri uri = AndroidStringUtils.parseHttpsUriFromString(VALID_URL_MISSING_PROTOCOL);
+
+        assertNotNull(uri);
+        assertThat(uri.toString(), is("https://" + VALID_URL_MISSING_PROTOCOL));
+    }
+
+    @Test
     public void testInvalidUrl() {
         final String INVALID_URL = "<not a url>";
-        Uri uri = AndroidStringUtils.parseUriFromString(INVALID_URL);
+        Uri uri = AndroidStringUtils.parseHttpUriFromString(INVALID_URL);
 
         assertNull(uri);
     }

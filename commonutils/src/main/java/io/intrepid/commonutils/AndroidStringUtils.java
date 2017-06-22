@@ -8,11 +8,10 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.util.Log;
 import android.util.Patterns;
 
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.net.URL;
+import java.net.URI;
 
 /**
  * String utility methods that touches Android classes. Methods inside this class
@@ -107,28 +106,45 @@ public abstract class AndroidStringUtils {
      * <p>
      * This method will look for the case where the URL string is missing the protocol, and will prepend it if necessary.
      *
-     * @param url - The String that you want to try parsing as a Uri
-     * @return A valid, well-formed Uri, or null if the url parameter was not valid
+     * @param inputUri The String that you want to try parsing as a Uri
+     * @param scheme   The scheme (e.g. 'http://', 'https://', 'ftp://') to prepend to this inputUri if it did not have a scheme
+     * @return A valid, well-formed Uri, or null if the inputUri parameter was not a valid URI
      */
     @Nullable
-    public static Uri parseUriFromString(@NonNull String url) {
-        URL validatedUrl = null;
+    public static Uri parseUriFromString(@NonNull String inputUri, @NonNull String scheme) {
         try {
-            validatedUrl = new URL(url);
-        } catch (MalformedURLException e) {
-            try {
-                validatedUrl = new URL("http://" + url);
-            } catch (MalformedURLException ignored) {
+            URI uri = new URI(inputUri);
+            if (uri.getScheme() == null) {
+                uri = new URI(scheme + inputUri);
             }
+            return Uri.parse(uri.toString());
+        } catch (Exception e) {
+            Log.e(AndroidStringUtils.class.getSimpleName(), "Could not parse URI", e);
+            return null;
         }
+    }
 
-        if (validatedUrl != null) {
-            try {
-                return Uri.parse(validatedUrl.toURI().toString());
-            } catch (URISyntaxException ignored) {
-            }
-        }
+    /**
+     * Convenience function to parse http Uris
+     *
+     * @param uri The String that you want to try parsing as a Uri
+     * @return A valid, well-formed Uri, or null if the uri parameter was not a valid URI
+     * @see #parseUriFromString
+     */
+    @Nullable
+    public static Uri parseHttpUriFromString(@NonNull String uri) {
+        return parseUriFromString(uri, "http://");
+    }
 
-        return null;
+    /**
+     * Convenience function to parse https Uris
+     *
+     * @param uri The String that you want to try parsing as a Uri
+     * @return A valid, well-formed Uri, or null if the uri parameter was not a valid URI
+     * @see #parseUriFromString
+     */
+    @Nullable
+    public static Uri parseHttpsUriFromString(@NonNull String uri) {
+        return parseUriFromString(uri, "https://");
     }
 }
