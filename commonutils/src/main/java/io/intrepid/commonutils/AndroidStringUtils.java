@@ -110,7 +110,7 @@ public abstract class AndroidStringUtils {
      * @return A valid, well-formed Uri, or an exception if the inputUri parameter was not a valid URI
      */
     @NonNull
-    public static Uri parseUriFromString(@NonNull String inputUri, @NonNull String scheme) throws NullPointerException, URISyntaxException {
+    public static Uri parseUriFromString(@NonNull String inputUri, @NonNull String scheme) throws URISyntaxException {
         URI uri = new URI(inputUri);
         if (uri.getScheme() == null) {
             uri = new URI(scheme + inputUri);
@@ -126,7 +126,7 @@ public abstract class AndroidStringUtils {
      * @see #parseUriFromString
      */
     @NonNull
-    public static Uri parseHttpUriFromString(@NonNull String uri) throws NullPointerException, URISyntaxException {
+    public static Uri parseHttpUriFromString(@NonNull String uri) throws URISyntaxException {
         return parseUriFromString(uri, "http://");
     }
 
@@ -138,7 +138,7 @@ public abstract class AndroidStringUtils {
      * @see #parseUriFromString
      */
     @NonNull
-    public static Uri parseHttpsUriFromString(@NonNull String uri) throws NullPointerException, URISyntaxException {
+    public static Uri parseHttpsUriFromString(@NonNull String uri) throws URISyntaxException {
         return parseUriFromString(uri, "https://");
     }
 }

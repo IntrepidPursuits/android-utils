@@ -60,11 +60,4 @@ public class AndroidStringUtilsTest {
     public void testInvalidUri() throws URISyntaxException {
         AndroidStringUtils.parseHttpUriFromString("<invalid uri>");
     }
-
-    @Test(expected = NullPointerException.class)
-    public void testNullUri() throws URISyntaxException {
-        // Intentionally pass null to simulate what could happen internally
-        //noinspection ConstantConditions
-        AndroidStringUtils.parseHttpUriFromString(null);
-    }
 }
