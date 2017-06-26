@@ -44,8 +44,19 @@ task androidReleaseJar(type: Jar, dependsOn: 'assembleRelease') {
 }
 
 publish.dependsOn 'assembleRelease'
+publishToMavenLocal.dependsOn 'assembleRelease'
+bintrayUpload.dependsOn 'assembleRelease'
 
 publishing {
+
+    // use `./gradlew publish` to deploy the artifact locally for testing. The artifact created will be in the project
+    // directory
+    // `./gradlew publishToMavenLocal` can also be used to publish to the mavenLocal directory (i.e ~/.m2/repository/)
+    repositories {
+        maven {
+            url "../repo"
+        }
+    }
 
     publications {
         mavenLibrary(MavenPublication) {
@@ -58,9 +69,9 @@ publishing {
             //artifact(androidReleaseJar)
             artifact(getArtifactPath())
 
-            // The publication doesn't know about our dependencies since we can't use `from component java`,
-            // so we have to manually add them to the pom
             pom.withXml {
+                // The publication doesn't know about our dependencies since we can't use `from component java`,
+                // so we have to manually add them to the pom
                 def dependenciesNode = asNode().appendNode('dependencies')
 
                 // Iterate over the compile dependencies (we don't want the test ones), adding a <dependency> node for each
@@ -73,6 +84,7 @@ publishing {
                     }
                 }
 
+                // extra metadata about the library that are required by Sonatype/MavenCentral
                 asNode().children().last() + {
                     resolveStrategy = DELEGATE_FIRST
                     name 'android-utils'
@@ -99,6 +111,7 @@ publishing {
     }
 }
 
+// use `./gradlew bintrayUpload` to deploy the artifact to maven for public release
 bintray {
     user = getLocalProperty("bintray_user")
     key = getLocalProperty("bintray_key")
