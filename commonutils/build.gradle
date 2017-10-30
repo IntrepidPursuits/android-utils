@@ -3,12 +3,12 @@ apply from: 'coverage.gradle'
 apply plugin: 'io.intrepid.static-analysis'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.3"
+    compileSdkVersion 26
+    buildToolsVersion "26.0.2"
 
     defaultConfig {
         minSdkVersion 15
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode 1
         versionName "0.2.2"
     }
@@ -23,18 +23,18 @@ android {
 apply from: 'publish.gradle'
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    def supportVersion = '25.3.1'
-    compile "com.android.support:support-compat:$supportVersion"
-    compile "com.android.support:support-annotations:$supportVersion"
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    def supportVersion = '26.1.0'
+    implementation "com.android.support:support-compat:$supportVersion"
+    implementation "com.android.support:support-annotations:$supportVersion"
 
     // Unit testing dependencies
     def junitVersion = '4.12'
-    testCompile "junit:junit:$junitVersion"
+    testImplementation "junit:junit:$junitVersion"
     def mockitoVersion = '2.8.9'
-    testCompile "org.mockito:mockito-core:$mockitoVersion"
+    testImplementation "org.mockito:mockito-core:$mockitoVersion"
     def robolectricVersion = '3.3.2'
-    testCompile "org.robolectric:robolectric:$robolectricVersion"
+    testImplementation "org.robolectric:robolectric:$robolectricVersion"
 
     javadocDeps "com.android.support:support-annotations:$supportVersion"
 }
