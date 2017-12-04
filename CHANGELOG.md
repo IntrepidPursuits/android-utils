@@ -3,6 +3,7 @@ Change Log
 
 Version 0.2.3 *(2017-10-20)*
 ----------------------------
+* New: `AndroidStringUtils.isEmpty()` now has an annotation that tells AndroidStudio that this method checks whether the passed in String parameter is null.
 * Upgrade static analysis plugin and other libraries
 
 Version 0.2.2 *(2017-06-26)*
