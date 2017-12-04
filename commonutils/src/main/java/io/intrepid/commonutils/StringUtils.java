@@ -50,6 +50,7 @@ public abstract class StringUtils {
      * @param str the string to be examined
      * @return true if str is null or zero length
      */
+    @org.jetbrains.annotations.Contract("null -> true")
     public static boolean isEmpty(@Nullable CharSequence str) {
         return str == null || str.length() == 0;
     }

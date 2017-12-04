@@ -28,6 +28,9 @@ dependencies {
     implementation "com.android.support:support-compat:$supportVersion"
     implementation "com.android.support:support-annotations:$supportVersion"
 
+    // "Contract" annotation to allow for better null-checking
+    implementation "org.jetbrains:annotations:15.0"
+
     // Unit testing dependencies
     def junitVersion = '4.12'
     testImplementation "junit:junit:$junitVersion"
