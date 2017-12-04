@@ -1,6 +1,10 @@
 Change Log
 ==========
 
+Version 0.2.3 *(2017-10-20)*
+----------------------------
+* Upgrade static analysis plugin and other libraries
+
 Version 0.2.2 *(2017-06-26)*
 ----------------------------
 * New:  `AndroidStringUtils.parseUriFromString()` method for adding the scheme (http://, https://, etc.) if it was missing when parsing a Uri from a String.
